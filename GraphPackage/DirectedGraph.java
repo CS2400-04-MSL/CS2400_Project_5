@@ -15,10 +15,36 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return null;
     }
 
+    public QueueInterface<Vertex> getDepthFirstTraversal(Vertex origin) 
+    {
+        // TODO Auto-generated method stub
+        LinkedStack<Vertex> vertexStack = new LinkedStack<Vertex>();
+        LinkedQueue<Vertex> traversalOrder = new LinkedQueue<Vertex>();
+
+        origin.visit();
+        traversalOrder.enqueue(origin);
+        vertexStack.push(origin);
+
+        Vertex topVertex = null;
+        while (!vertexStack.isEmpty())
+        {
+            topVertex = vertexStack.peek();
+            if (topVertex != null && topVertex.getUnvisitedNeighbor() != null)
+            {
+                Vertex nextNeighbor = (Vertex)topVertex.getUnvisitedNeighbor();
+                nextNeighbor.visit();
+                traversalOrder.enqueue(nextNeighbor);
+                vertexStack.push(nextNeighbor);
+            }
+            else
+                vertexStack.pop();
+        }
+        return traversalOrder;
+    }
+
     public QueueInterface<T> getDepthFirstTraversal(T origin) 
     {
         // TODO Auto-generated method stub
-        LinkedStack depthStack = new LinkedStack();
         return null;
     }
 
