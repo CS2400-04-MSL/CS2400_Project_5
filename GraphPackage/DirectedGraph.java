@@ -3,6 +3,20 @@ import ADTPackage.*;
 
 public class DirectedGraph<T> implements GraphInterface<T> 
 {
+	private boolean[][] edges;
+	private T[] labels;
+	
+	public DirectedGraph (int n)
+	{
+		edges = new boolean [n][n];
+		labels = (T[]) new Object[n];
+	}
+    public DirectedGraph() 
+    {
+		edges = new boolean [5][5];
+		labels = (T[]) new Object[5];
+	}
+    
     public int getShortestPath(T begin, T end, StackInterface<T> path) 
     {
         // TODO Auto-generated method stub
