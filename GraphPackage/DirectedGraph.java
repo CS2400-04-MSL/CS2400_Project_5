@@ -23,6 +23,26 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return 0;
     }
 
+    public QueueInterface<Vertex> getBreadthFirstTraversal(Vertex origin)
+    {
+        LinkedQueue<Vertex> traversalOrder = new LinkedQueue<Vertex>();
+
+        origin.visit();
+        traversalOrder.enqueue(origin);
+
+        Vertex currentVertex = origin;
+
+        // if no neighbors, return the queue
+        if (!currentVertex.hasNeighbor()) {return traversalOrder;}
+
+        while (currentVertex != null)
+        {
+
+        }
+
+        return traversalOrder;
+    }
+
     public QueueInterface<T> getBreadthFirstTraversal(T origin) 
     {
         // TODO Auto-generated method stub
