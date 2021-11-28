@@ -79,7 +79,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
     public QueueInterface<T> getDepthFirstTraversal(T origin) 
     {
         // TODO Auto-generated method stub
-        return null;
+        return (LinkedQueue<T>)getDepthFirstTraversal((Vertex<T>)origin);
     }
 
     public void clear() 
@@ -100,10 +100,11 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return null;
     }
 
-    public boolean addVertex(T vertexLabel) 
+    public boolean addVertex(T vertexLabel)
     {
-        // TODO Auto-generated method stub
-        return false;
+        int index = ensureCapacity();
+        labels[index] = vertexLabel;
+        return true;
     }
 
     public boolean hasEdge(T begin, T end) 
@@ -121,6 +122,19 @@ public class DirectedGraph<T> implements GraphInterface<T>
     public boolean addEdge(T begin, T end) 
     {
         // TODO Auto-generated method stub
+        int beginIndex = -1, endIndex = -1, i = 0;
+        while ((beginIndex == 0 || endIndex == 0) && i < labels.length)
+        {
+            if (beginIndex == -1 && labels[i].equals(begin))
+                beginIndex = i;
+            if (endIndex == -1 && labels[i].equals(end))
+                endIndex = i;
+        }
+        if (beginIndex != -1 && endIndex != -1)
+        {
+            edges[beginIndex][endIndex] = true;
+            return true;
+        }
         return false;
     }
 
@@ -140,5 +154,31 @@ public class DirectedGraph<T> implements GraphInterface<T>
     {
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    private int ensureCapacity()
+    {
+        int index = -1;
+        if (labels[labels.length-1] != null)
+        {
+            T temp[] = (T[]) new Object[labels.length*2];
+            index = labels.length;
+            
+            for (int i = 0; i < labels.length; i++)
+                temp[i] = labels[i];
+            
+            labels = temp;
+        }
+        else
+        {
+            int i = 0;
+            while (index == -1 && i < labels.length)
+            {
+                if (labels[i] == null)
+                    index = i;
+                i++;
+            }
+        }
+        return index;
     }
 }
