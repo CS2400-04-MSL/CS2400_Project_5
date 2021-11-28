@@ -39,14 +39,14 @@ public class DirectedGraph<T> implements GraphInterface<T>
 
     public QueueInterface<T> getBreadthFirstTraversal(T origin) 
     {
-        // TODO Auto-generated method stub
+        
         return null;
     }
 
     /*
     public QueueInterface<Vertex> getDepthFirstTraversal(Vertex origin) 
     {
-        // TODO Auto-generated method stub
+        // 
         LinkedStack<Vertex> vertexStack = new LinkedStack<Vertex>();
         LinkedQueue<Vertex> traversalOrder = new LinkedQueue<Vertex>();
 
@@ -99,6 +99,29 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return traversalOrder;
     }
 
+    public int[] neighbors(int vertex)
+    {
+    	int i;
+    	int count = 0;
+    	int[] answer;
+    	
+    	for (i=0; i < labels.length; i++)
+    	{
+    		if(edges[vertex][i])
+    			count++;
+    	}
+    	
+    	answer = new int[count];
+    	count = 0;
+    	for (i=0; i < labels.length; i++)
+    	{
+    		if(edges[vertex][i])
+    			answer[count++] = i;
+    	}
+    	
+    	return answer;
+    }
+    
     private boolean hasUnvisitedNeighbor(T vertex, boolean[] visited)
     {
         if(getUnvisitedNeighbor(vertex, visited) != null)
@@ -131,6 +154,11 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return false;
     }
 
+    public boolean isEdge(int source, int target)
+    {
+    	return edges[source][target];
+    }
+    
     public boolean addVertex(T vertexLabel)
     {
         int index = ensureCapacity();
@@ -144,7 +172,6 @@ public class DirectedGraph<T> implements GraphInterface<T>
 
     public boolean addEdge(T begin, T end) 
     {
-        // TODO Auto-generated method stub
         int beginIndex = getIndex(begin), endIndex = getIndex(end);
         if (beginIndex != -1 && endIndex != -1)
         {
@@ -154,6 +181,21 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return false;
     }
 
+    public void removeEdge(int source, int target)
+    {
+    	edges[source][target] = false;
+    }
+    
+    public void setLabel(int vertex, T newLabel)
+    {
+    	labels[vertex] = newLabel;
+    }
+    
+    public int size()
+    {
+    	return labels.length;
+    }
+    
     private int ensureCapacity()
     {
         int index = -1;
@@ -194,4 +236,51 @@ public class DirectedGraph<T> implements GraphInterface<T>
     {
         return labels;
     }
+    
+    //ignore everything under this comment
+	@Override
+	public boolean addEdge(T begin, T end, double edgeWeight) {
+		// 
+		return false;
+	}
+	@Override
+	public boolean hasEdge(T begin, T end) {
+		// 
+		return false;
+	}
+	@Override
+	public boolean isEmpty() {
+		// 
+		return false;
+	}
+	@Override
+	public int getNumberOfVertices() {
+		// 
+		return 0;
+	}
+	@Override
+	public int getNumberOfEdges() {
+		// 
+		return 0;
+	}
+	@Override
+	public void clear() {
+		// 
+		
+	}
+	@Override
+	public StackInterface<T> getTopologicalOrder() {
+		// 
+		return null;
+	}
+	@Override
+	public int getShortestPath(T begin, T end, StackInterface<T> path) {
+		// 
+		return 0;
+	}
+	@Override
+	public double getCheapestPath(T begin, T end, StackInterface<T> path) {
+		// 
+		return 0;
+	}
 }
