@@ -16,12 +16,6 @@ public class DirectedGraph<T> implements GraphInterface<T>
 		edges = new boolean [5][5];
 		labels = (T[]) new Object[5];
 	}
-    
-    public int getShortestPath(T begin, T end, StackInterface<T> path) 
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
 
     public QueueInterface<Vertex> getBreadthFirstTraversal(Vertex origin)
     {
@@ -137,24 +131,6 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return false;
     }
 
-    public void clear() 
-    {
-        // TODO Auto-generated method stub
-        
-    }
-
-    public int getNumberOfVertices() 
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    public StackInterface<T> getTopologicalOrder() 
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public boolean addVertex(T vertexLabel)
     {
         int index = ensureCapacity();
@@ -163,18 +139,6 @@ public class DirectedGraph<T> implements GraphInterface<T>
             labels[index] = vertexLabel;
             return true;
         }
-        return false;
-    }
-
-    public boolean hasEdge(T begin, T end) 
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public boolean isEmpty() 
-    {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -188,24 +152,6 @@ public class DirectedGraph<T> implements GraphInterface<T>
             return true;
         }
         return false;
-    }
-
-    public boolean addEdge(T begin, T end, double edgeWeight) 
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    public int getNumberOfEdges() 
-    {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    public double getCheapestPath(T begin, T end, StackInterface<T> path) 
-    {
-        // TODO Auto-generated method stub
-        return 0;
     }
 
     private int ensureCapacity()
