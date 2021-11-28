@@ -49,6 +49,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return null;
     }
 
+    /*
     public QueueInterface<Vertex> getDepthFirstTraversal(Vertex origin) 
     {
         // TODO Auto-generated method stub
@@ -75,11 +76,65 @@ public class DirectedGraph<T> implements GraphInterface<T>
         }
         return traversalOrder;
     }
+    */
 
     public QueueInterface<T> getDepthFirstTraversal(T origin) 
     {
-        // TODO Auto-generated method stub
-        return (LinkedQueue<T>)getDepthFirstTraversal((Vertex<T>)origin);
+        LinkedStack<T> vertexStack = new LinkedStack<T>();
+        LinkedQueue<T> traversalOrder = new LinkedQueue<T>();
+        boolean[] visited = new boolean[labels.length];
+
+        visit(origin, visited);//visited[getIndex(origin)] = true; //mark as visited
+        traversalOrder.enqueue(origin);
+        vertexStack.push(origin);
+
+        T topVertex = null;
+        while(!vertexStack.isEmpty())
+        {
+            topVertex = vertexStack.peek();
+            if (hasUnvisitedNeighbor(topVertex, visited))
+            {
+                T nextNeighbor = getUnvisitedNeighbor(topVertex, visited);
+                visit(nextNeighbor, visited);//visited[getIndex(nextNeighbor)] = true;
+                traversalOrder.enqueue(nextNeighbor);
+                vertexStack.push(nextNeighbor);
+            }
+            else
+                vertexStack.pop();
+        }
+        return traversalOrder;
+    }
+
+    private boolean hasUnvisitedNeighbor(T vertex, boolean[] visited)
+    {
+        if(getUnvisitedNeighbor(vertex, visited) != null)
+            return true;
+        return false;
+    }
+
+    private T getUnvisitedNeighbor(T vertex, boolean[] visited)
+    {
+        int vertexIndex = getIndex(vertex);
+        if (vertexIndex < 0)
+            return null;
+        
+        for (int j = 0; j < edges[vertexIndex].length; j++)
+        {
+            if (edges[vertexIndex][j] == true && visited[j] == false)
+                return labels[j];
+        }
+        return null;
+    }
+
+    private boolean visit(T vertex, boolean[] visited)
+    {
+        int index = getIndex(vertex);
+        if (index != -1)
+        {
+            visited[index] = true;
+            return true;
+        }
+        return false;
     }
 
     public void clear() 
@@ -103,8 +158,12 @@ public class DirectedGraph<T> implements GraphInterface<T>
     public boolean addVertex(T vertexLabel)
     {
         int index = ensureCapacity();
-        labels[index] = vertexLabel;
-        return true;
+        if (index != -1)
+        {
+            labels[index] = vertexLabel;
+            return true;
+        }
+        return false;
     }
 
     public boolean hasEdge(T begin, T end) 
@@ -122,14 +181,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
     public boolean addEdge(T begin, T end) 
     {
         // TODO Auto-generated method stub
-        int beginIndex = -1, endIndex = -1, i = 0;
-        while ((beginIndex == 0 || endIndex == 0) && i < labels.length)
-        {
-            if (beginIndex == -1 && labels[i].equals(begin))
-                beginIndex = i;
-            if (endIndex == -1 && labels[i].equals(end))
-                endIndex = i;
-        }
+        int beginIndex = getIndex(begin), endIndex = getIndex(end);
         if (beginIndex != -1 && endIndex != -1)
         {
             edges[beginIndex][endIndex] = true;
@@ -159,7 +211,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
     private int ensureCapacity()
     {
         int index = -1;
-        if (labels[labels.length-1] != null)
+        if (labels[labels.length-1] != null) //last index of labels is full
         {
             T temp[] = (T[]) new Object[labels.length*2];
             index = labels.length;
@@ -169,16 +221,31 @@ public class DirectedGraph<T> implements GraphInterface<T>
             
             labels = temp;
         }
-        else
+        else //labels is not full
         {
             int i = 0;
-            while (index == -1 && i < labels.length)
-            {
-                if (labels[i] == null)
-                    index = i;
+            while(labels[i] != null)
                 i++;
-            }
+            index = i;
         }
         return index;
+    }
+
+    private int getIndex(T label)
+    {
+        int i = 0, index = -1;
+        while (index == -1 && i < labels.length)
+        {
+            if (labels[i] != null && labels[i].equals(label))
+                index = i;
+            i++;
+        }
+
+        return index;
+    }
+
+    public T[] getLabels()
+    {
+        return labels;
     }
 }
