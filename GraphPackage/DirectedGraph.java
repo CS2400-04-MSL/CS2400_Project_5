@@ -1,6 +1,8 @@
 package GraphPackage;
 import ADTPackage.*;
 
+import java.util.Iterator;
+
 public class DirectedGraph<T> implements GraphInterface<T> 
 {
 	private boolean[][] edges;
@@ -17,31 +19,50 @@ public class DirectedGraph<T> implements GraphInterface<T>
 		labels = (T[]) new Object[5];
 	}
 
-    public QueueInterface<Vertex> getBreadthFirstTraversal(Vertex origin)
+    public QueueInterface<VertexInterface<T>> getBreadthFirstTraversal(VertexInterface<T> origin)
     {
-        LinkedQueue<Vertex> traversalOrder = new LinkedQueue<Vertex>();
+        LinkedQueue<VertexInterface<T>> traversalQueue = new LinkedQueue<VertexInterface<T>>();
+        LinkedQueue<VertexInterface<T>> returnQueue = new LinkedQueue<VertexInterface<T>>();
 
+        // add origin vertex to the traversal queue
         origin.visit();
-        traversalOrder.enqueue(origin);
+        traversalQueue.enqueue(origin);
 
-        Vertex currentVertex = origin;
-
-        // if no neighbors, return the queue
-        if (!currentVertex.hasNeighbor()) {return traversalOrder;}
-
-        while (currentVertex != null)
+        //
+        while (traversalQueue.getFront() != null) //check if the traversal queue is not empty
         {
+            //pop the first item from queue and add to returnQueue
+            VertexInterface<T> currentVertex = traversalQueue.dequeue();
+            returnQueue.enqueue(currentVertex);
 
+            //create neighbor iterator
+            Iterator<VertexInterface<T>> neighborIterator = currentVertex.getNeighborIterator();
+
+            //iterate through neighbors. add unvisited vertices to the traversalQueue and mark as visited.
+            while (neighborIterator.hasNext())
+            {
+                VertexInterface<T> neighborVertex = neighborIterator.next();
+
+                if (neighborVertex.isVisited())
+                {
+                    //add neighborVertex to traversal queue and mark as visited
+                    traversalQueue.enqueue(neighborVertex);
+                    neighborVertex.visit();
+                }
+            }
         }
-
-        return traversalOrder;
+        return returnQueue;
     }
+
 
     public QueueInterface<T> getBreadthFirstTraversal(T origin) 
     {
-        
+        //LinkedQueue<T> traversalOrder = new LinkedQueue<T>();
+
         return null;
     }
+
+
 
     /*
     public QueueInterface<Vertex> getDepthFirstTraversal(Vertex origin) 
@@ -172,6 +193,10 @@ public class DirectedGraph<T> implements GraphInterface<T>
 
     public boolean addEdge(T begin, T end) 
     {
+        // connect vertices using connect function
+
+
+
         int beginIndex = getIndex(begin), endIndex = getIndex(end);
         if (beginIndex != -1 && endIndex != -1)
         {
