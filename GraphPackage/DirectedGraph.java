@@ -54,7 +54,6 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return returnQueue;
     }
 
-
     public QueueInterface<T> getBreadthFirstTraversal(T origin) 
     {
         //LinkedQueue<T> traversalOrder = new LinkedQueue<T>();
@@ -62,37 +61,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return null;
     }
 
-
-
-    /*
-    public QueueInterface<Vertex> getDepthFirstTraversal(Vertex origin) 
-    {
-        // 
-        LinkedStack<Vertex> vertexStack = new LinkedStack<Vertex>();
-        LinkedQueue<Vertex> traversalOrder = new LinkedQueue<Vertex>();
-
-        origin.visit();
-        traversalOrder.enqueue(origin);
-        vertexStack.push(origin);
-
-        Vertex topVertex = null;
-        while (!vertexStack.isEmpty())
-        {
-            topVertex = vertexStack.peek();
-            if (topVertex != null && topVertex.getUnvisitedNeighbor() != null)
-            {
-                Vertex nextNeighbor = (Vertex)topVertex.getUnvisitedNeighbor();
-                nextNeighbor.visit();
-                traversalOrder.enqueue(nextNeighbor);
-                vertexStack.push(nextNeighbor);
-            }
-            else
-                vertexStack.pop();
-        }
-        return traversalOrder;
-    }
-    */
-
+    /** Gets the breadth-first traversal of the graph starting from a certain node
+      @return  a LinkedQueue containing the traversal order. */
     public QueueInterface<T> getDepthFirstTraversal(T origin) 
     {
         LinkedStack<T> vertexStack = new LinkedStack<T>();
@@ -120,6 +90,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return traversalOrder;
     }
 
+    
     public int[] neighbors(int vertex)
     {
     	int i;
@@ -143,6 +114,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
     	return answer;
     }
     
+    /** Determines if a certain node has any neighbors that are unvisited
+      @return  true if has an unvisited neighbor, otherwise false. */
     private boolean hasUnvisitedNeighbor(T vertex, boolean[] visited)
     {
         if(getUnvisitedNeighbor(vertex, visited) != null)
@@ -150,6 +123,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return false;
     }
 
+    /** Gets an unvisited neighbor belonging to a certain node, if any
+      @return  T unvisited neighbor. */
     private T getUnvisitedNeighbor(T vertex, boolean[] visited)
     {
         int vertexIndex = getIndex(vertex);
@@ -164,6 +139,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return null;
     }
 
+    /** Updates a given boolean array of visited nodes, marking the given node as visited/true
+      @return  true if successful. */
     private boolean visit(T vertex, boolean[] visited)
     {
         int index = getIndex(vertex);
@@ -180,6 +157,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
     	return edges[source][target];
     }
     
+    /** Adds a vertex with a given label to the graph
+      @return  true if successful. */
     public boolean addVertex(T vertexLabel)
     {
         int index = ensureCapacity();
@@ -191,8 +170,11 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return false;
     }
 
+    /** Adds an edge between two vertecies, begin pointing to end
+      @return  true if successful. */
     public boolean addEdge(T begin, T end) 
     {
+        ensureCapacity();
         // connect vertices using connect function
 
 
@@ -221,6 +203,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
     	return labels.length;
     }
     
+    /** Ensures that labels[] and edges[][] aren't full
+      @return  index of the first null value of labels[]. */
     private int ensureCapacity()
     {
         int index = -1;
@@ -233,6 +217,14 @@ public class DirectedGraph<T> implements GraphInterface<T>
                 temp[i] = labels[i];
             
             labels = temp;
+
+            boolean tempEdge[][] = new boolean[edges.length*2][edges.length*2];
+            for (int i = 0; i < edges.length; i++)
+            {
+                for (int j = 0; j < edges[i].length; j++)
+                    tempEdge[i][j] = edges[i][j];
+            }
+            edges = tempEdge;
         }
         else //labels is not full
         {
@@ -244,6 +236,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return index;
     }
 
+    /** Gets the index of a label in labels[]
+      @return  int index of label in labels[]. */
     private int getIndex(T label)
     {
         int i = 0, index = -1;
@@ -257,6 +251,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return index;
     }
 
+    /** Gets array of labels
+      @return  labels[]. */
     public T[] getLabels()
     {
         return labels;
