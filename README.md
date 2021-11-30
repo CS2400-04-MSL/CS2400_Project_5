@@ -7,4 +7,4 @@ Leonard Woo - Breadth-first traversal
 
 Steven Watson - Depth-first traversal
 
-[video](https://www.zombo.com)
+[video](https://youtu.be/t4wohfG1x_E)
