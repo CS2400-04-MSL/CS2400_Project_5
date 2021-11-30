@@ -22,6 +22,8 @@ public class DirectedGraph<T> implements GraphInterface<T>
         vertices = new Vertex[5];
 	}
 
+    /** Gets the Breadth-first traversal of the graph starting from a certain node and implementing Vertex class
+     @return  a LinkedQueue containing the traversal order. */
     public QueueInterface<Vertex> getBreadthFirstTraversal(Vertex origin)
     {
         LinkedQueue<Vertex> traversalQueue = new LinkedQueue<Vertex>();
@@ -57,6 +59,10 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return returnQueue;
     }
 
+    /** Implements the getBreadthFirstTraversal using vertex method.
+     * @param origin  An object that labels the origin vertex of the traversal.
+     * @return
+     */
     public QueueInterface<T> getBreadthFirstTraversal(T origin) 
     {
         int originIndex = getIndex(origin);
@@ -76,7 +82,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
         return returnQueue;
     }
 
-    /** Gets the breadth-first traversal of the graph starting from a certain node
+    /** Gets the Depth-first traversal of the graph starting from a certain node
       @return  a LinkedQueue containing the traversal order. */
     public QueueInterface<T> getDepthFirstTraversal(T origin) 
     {
