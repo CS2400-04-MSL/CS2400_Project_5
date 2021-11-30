@@ -46,7 +46,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
             {
                 Vertex neighborVertex = neighborIterator.next();
 
-                if (neighborVertex.isVisited())
+                if (!neighborVertex.isVisited())
                 {
                     //add neighborVertex to traversal queue and mark as visited
                     traversalQueue.enqueue(neighborVertex);
@@ -65,7 +65,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
         //vertexQueue.dequeue();
 
         LinkedQueue<T> returnQueue = new LinkedQueue<T>();
-        
+
         while (!vertexQueue.isEmpty())
         {
             Vertex currentVertex = vertexQueue.dequeue();

@@ -35,13 +35,11 @@ public class GraphInterfaceTest {
 
         System.out.println("Labels = " + Arrays.toString(airMap.getLabels()));
 
-
         System.out.print("Breadth-first Traversal from A: <");
         QueueInterface breadthFirst = airMap.getBreadthFirstTraversal("A");
         while(!breadthFirst.isEmpty())
             System.out.print(" " + breadthFirst.dequeue() + " ");
         System.out.println(">");
-
 
         System.out.print("Depth-first Traversal from A: <");
         QueueInterface depthFirst = airMap.getDepthFirstTraversal("A");
