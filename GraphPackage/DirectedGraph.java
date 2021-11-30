@@ -7,41 +7,44 @@ public class DirectedGraph<T> implements GraphInterface<T>
 {
 	private boolean[][] edges;
 	private T[] labels;
+	private Vertex[] vertices;
 	
 	public DirectedGraph (int n)
 	{
 		edges = new boolean [n][n];
 		labels = (T[]) new Object[n];
+        vertices = new Vertex[n];
 	}
     public DirectedGraph() 
     {
 		edges = new boolean [5][5];
 		labels = (T[]) new Object[5];
+        vertices = new Vertex[5];
 	}
 
-    public QueueInterface<VertexInterface<T>> getBreadthFirstTraversal(VertexInterface<T> origin)
+    public QueueInterface<Vertex> getBreadthFirstTraversal(Vertex origin)
     {
-        LinkedQueue<VertexInterface<T>> traversalQueue = new LinkedQueue<VertexInterface<T>>();
-        LinkedQueue<VertexInterface<T>> returnQueue = new LinkedQueue<VertexInterface<T>>();
+        LinkedQueue<Vertex> traversalQueue = new LinkedQueue<Vertex>();
+        LinkedQueue<Vertex> returnQueue = new LinkedQueue<Vertex>();
 
         // add origin vertex to the traversal queue
         origin.visit();
         traversalQueue.enqueue(origin);
 
         //
-        while (traversalQueue.getFront() != null) //check if the traversal queue is not empty
+        while (!traversalQueue.isEmpty()) //check if the traversal queue is not empty
         {
             //pop the first item from queue and add to returnQueue
-            VertexInterface<T> currentVertex = traversalQueue.dequeue();
+            Vertex currentVertex = traversalQueue.dequeue();
             returnQueue.enqueue(currentVertex);
 
             //create neighbor iterator
-            Iterator<VertexInterface<T>> neighborIterator = currentVertex.getNeighborIterator();
+            Iterator<Vertex> neighborIterator = currentVertex.getNeighborIterator();
 
             //iterate through neighbors. add unvisited vertices to the traversalQueue and mark as visited.
             while (neighborIterator.hasNext())
             {
-                VertexInterface<T> neighborVertex = neighborIterator.next();
+                Vertex neighborVertex = neighborIterator.next();
 
                 if (neighborVertex.isVisited())
                 {
@@ -56,9 +59,21 @@ public class DirectedGraph<T> implements GraphInterface<T>
 
     public QueueInterface<T> getBreadthFirstTraversal(T origin) 
     {
-        //LinkedQueue<T> traversalOrder = new LinkedQueue<T>();
+        int originIndex = getIndex(origin);
+        QueueInterface<Vertex> vertexQueue = getBreadthFirstTraversal(vertices[originIndex]);
 
-        return null;
+        //vertexQueue.dequeue();
+
+        LinkedQueue<T> returnQueue = new LinkedQueue<T>();
+        
+        while (!vertexQueue.isEmpty())
+        {
+            Vertex currentVertex = vertexQueue.dequeue();
+            Object vertexLabel = currentVertex.getLabel();
+            returnQueue.enqueue((T) vertexLabel);
+        }
+
+        return returnQueue;
     }
 
     /** Gets the breadth-first traversal of the graph starting from a certain node
@@ -165,24 +180,23 @@ public class DirectedGraph<T> implements GraphInterface<T>
         if (index != -1)
         {
             labels[index] = vertexLabel;
+            vertices[index] = new Vertex(vertexLabel);
             return true;
         }
         return false;
     }
 
-    /** Adds an edge between two vertecies, begin pointing to end
+    /** Adds an edge between two vertices, begin pointing to end
       @return  true if successful. */
     public boolean addEdge(T begin, T end) 
     {
         ensureCapacity();
-        // connect vertices using connect function
-
-
 
         int beginIndex = getIndex(begin), endIndex = getIndex(end);
         if (beginIndex != -1 && endIndex != -1)
         {
             edges[beginIndex][endIndex] = true;
+            vertices[beginIndex].connect(vertices[endIndex]);
             return true;
         }
         return false;
@@ -203,7 +217,7 @@ public class DirectedGraph<T> implements GraphInterface<T>
     	return labels.length;
     }
     
-    /** Ensures that labels[] and edges[][] aren't full
+    /** Ensures that labels[], edges[][], and vertices[] aren't full
       @return  index of the first null value of labels[]. */
     private int ensureCapacity()
     {
@@ -211,12 +225,19 @@ public class DirectedGraph<T> implements GraphInterface<T>
         if (labels[labels.length-1] != null) //last index of labels is full
         {
             T temp[] = (T[]) new Object[labels.length*2];
+            Vertex temp2[] = new Vertex[labels.length*2];
+
             index = labels.length;
-            
+
+            // copy contents of both labels[] and vertices[] to temp arrays
             for (int i = 0; i < labels.length; i++)
+            {
                 temp[i] = labels[i];
+                temp2[i] = vertices[i];
+            }
             
             labels = temp;
+            vertices = temp2;
 
             boolean tempEdge[][] = new boolean[edges.length*2][edges.length*2];
             for (int i = 0; i < edges.length; i++)
