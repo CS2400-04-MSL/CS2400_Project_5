@@ -9,43 +9,44 @@ public class GraphInterfaceTest {
     public static void main(String[] args)
     {
         DirectedGraph<String> airMap = new DirectedGraph<String>();
-        airMap.addVertex("Boston");
-        airMap.addVertex("Provincetown");
-        airMap.addVertex("Nantucket");
-        airMap.addEdge("Boston", "Provincetown");
-        airMap.addEdge("Boston", "Nantucket");
+        airMap.addVertex("A");
+        airMap.addVertex("B");
+        airMap.addVertex("C");
+        airMap.addVertex("D");
+        airMap.addVertex("E");
+        airMap.addVertex("F");
+        airMap.addVertex("G");
+        airMap.addVertex("H");
+        airMap.addVertex("I");
+
+        airMap.addEdge("A", "B");
+        airMap.addEdge("A", "D");
+        airMap.addEdge("A", "E");
+        airMap.addEdge("B", "E");
+        airMap.addEdge("C", "B");
+        airMap.addEdge("D", "G");
+        airMap.addEdge("E", "F");
+        airMap.addEdge("E", "H");
+        airMap.addEdge("F", "C");
+        airMap.addEdge("F", "H");
+        airMap.addEdge("G", "H");
+        airMap.addEdge("H", "I");
+        airMap.addEdge("I", "F");
 
         System.out.println("Labels = " + Arrays.toString(airMap.getLabels()));
 
-        System.out.println("Boston, Princetown, Nantucket");
-        System.out.println("Boston -> Provincetown");
-        System.out.println("Boston -> Nantucket\n");
+        /*
+        System.out.print("Breadth-first Traversal from A: <");
+        QueueInterface breadthFirst = airMap.getBreadthFirstTraversal("A");
+        while(!breadthFirst.isEmpty())
+            System.out.print(" " + breadthFirst.dequeue() + " ");
+        System.out.println(">");
+        */
 
-        System.out.print("Depth-first Traversal from Boston: <");
-        QueueInterface depthFirst = airMap.getDepthFirstTraversal("Boston");
+        System.out.print("Depth-first Traversal from A: <");
+        QueueInterface depthFirst = airMap.getDepthFirstTraversal("A");
         while(!depthFirst.isEmpty())
             System.out.print(" " + depthFirst.dequeue() + " ");
         System.out.println(">");
-
-        // @author Frank M. Carrano, Timothy M. Henry
-        // @version 5.0
-        /*
-        GraphInterface<String> roadMap = new DirectedGraph<String>();
-        roadMap.addVertex("Provincetown");
-        roadMap.addVertex("Truro");
-        // . . .
-
-        roadMap.addVertex("Falmouth");
-        roadMap.addEdge("Provincetown", "Truro", 10);
-        // . . .
-
-        roadMap.addEdge("Hyannis", "Falmouth", 20);
-
-        StackInterface<String> bestRoute = new LinkedStack<String>();
-        double distance = roadMap.getCheapestPath("Truro", "Falmouth", bestRoute);
-        System.out.println("The shortest route from Truro to Falmouth is " + distance + " miles long and " + "passes through the following towns:");
-        while (!bestRoute.isEmpty())
-            System.out.println(bestRoute.pop());
-        */
     }
 }
