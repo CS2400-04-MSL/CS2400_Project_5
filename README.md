@@ -7,4 +7,4 @@ Leonard Woo - Breadth-first traversal
 
 June Watson - Depth-first traversal
 
-[video](https://youtu.be/t4wohfG1x_E)
+[video]()
